@@ -1,4 +1,4 @@
-from flask import Flask, send_file, send_from_directory
+from flask import Flask, send_file, send_from_directory, render_template
 from flask import jsonify
 from flask import request
 import os
@@ -13,7 +13,8 @@ from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="./static", template_folder="./static",
+            )
 CORS(app)
 
 limiter = Limiter(app, key_func=get_remote_address)
@@ -24,6 +25,10 @@ app.config['UPLOAD_FOLDER'] = "uploads"
 jwt = JWTManager(app)
 
 
+@app.route('/')
+def index_redir():
+    # Reached if the user hits example.com/ instead of example.com/index.html
+    return render_template('index.html')
 # members api route
 
 
