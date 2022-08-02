@@ -1,6 +1,9 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
 
+import Login from "./pages/Login";
+import MainLayout from "./layout/MainLayout";
+
 function App() {
 	const [data, setData] = useState([{}]);
 	useEffect(() => {
@@ -13,16 +16,22 @@ function App() {
 	}, []);
 
 	return (
-		<div className="App">
-			{!data.oof ? (
-				<p>Loading...</p>
-			) : (
-				<>
-					<p>{data.oof}</p>
-					<p>{data.oof2}</p>
-				</>
-			)}
-		</div>
+		<>
+			{/* <MainLayout />
+			<div className="App">
+				{!data.oof ? (
+					<p>Loading...</p>
+				) : (
+					<>
+						<p>{data.oof}</p>
+						<p>{data.oof2}</p>
+					</>
+				)}
+
+				
+			</div> */}
+			<Login />
+		</>
 	);
 }
 
