@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Image } from "antd";
+
 const ViewImages = () => {
 	const [fileList, setFileList] = useState([
 		{
@@ -15,12 +16,18 @@ const ViewImages = () => {
 			url: "https://i.redd.it/p7e9jyxsxjv61.jpg",
 		},
 	]);
+
 	return (
 		<Image.PreviewGroup>
 			{fileList.map((file) => {
 				console.log(file);
-				return <Image key={file.url} width={200} src={file.url} />;
+				return <Image key={file.url} width={200} height={200} src={file.url} />;
 			})}
+			<Image
+				width={200}
+				height={200}
+				src={"http://localhost:3000/api/display-image/airfyercat.jpg"}
+			/>
 		</Image.PreviewGroup>
 	);
 };

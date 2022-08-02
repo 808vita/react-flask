@@ -4,41 +4,6 @@ import {
 	warningMessage,
 } from "../layout/Messages";
 
-// export const oof = async (setData) => {
-// 	console.log("dateChunks");
-
-// 	let tempArr = [];
-
-// 	const token = localStorage.getItem("token");
-// 	if (!token) {
-// 		return;
-// 	}
-// 	const formData = new FormData();
-// 	formData.append("access_token", token);
-// 	formData.append("get_all_orders_range", "true");
-// 	const result = await fetch(`/test-token`, {
-// 		method: "POST",
-// 		body: formData,
-// 	})
-// 		.then((res) => {
-// 			switch (res.status) {
-// 				case 200:
-// 					return res.json();
-// 				default:
-// 					errorMessage("Experienced an error!");
-// 					return { code: "unknown error" };
-// 			}
-// 		})
-// 		.then((data) => {
-// 			if (data.code) {
-// 				return;
-// 			}
-// 			tempArr = [...tempArr, ...data];
-// 		});
-
-// 	setData(tempArr);
-// };
-
 export const TestToken = async (setLoading, navigate) => {
 	setLoading(true);
 
@@ -153,7 +118,6 @@ export const UploadImageController = async (options) => {
 	console.log(access_token);
 	const formData = new FormData();
 	formData.append("image", file);
-	console.log(formData);
 	// "Content-Type": "multipart/form-data",
 	await fetch(`/api/upload-image`, {
 		method: "post",
@@ -163,20 +127,13 @@ export const UploadImageController = async (options) => {
 		},
 		body: formData,
 	})
-		// "content-type": "multipart/form-data",
-		// onUploadProgress: (event) => {
-		// 	const percent = Math.floor((event.loaded / event.total) * 100);
-		// 	setProgress(percent);
-		// 	if (percent === 100) {
-		// 		setTimeout(() => setProgress(0), 1000);
-		// 	}
-		// 	onProgress({ percent: (event.loaded / event.total) * 100 });
-		// },
 		.then((res) => {
+			console.log(res);
 			const status = res.status;
 			switch (status) {
 				case 200:
 					onSuccess(res.body);
+					console.log(res);
 					return res.json();
 
 				default:

@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_file, send_from_directory
 from flask import jsonify
 from flask import request
 import os
@@ -15,7 +15,7 @@ CORS(app)
 
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = "memecatto"  # Change this!
-app.config['UPLOADED_PHOTOS_DEST'] = "uploads"
+app.config['UPLOAD_FOLDER'] = "uploads"
 jwt = JWTManager(app)
 
 
@@ -61,14 +61,15 @@ def verify_token():
 @app.route("/api/upload-image", methods=["POST"])
 @jwt_required()
 def upload_image():
-    print(request.files)
-
     img = request.files["image"]
-    print(os.path.join(img.filename))
     img.save(os.path.join("./backend/uploads/", img.filename))
+    return jsonify(f"/api/display-image/{img.filename}")
 
-    return jsonify(os.path.join("./backend/uploads/", img.filename))
-    # return jsonify("oof")
+
+@app.route("/api/display-image/<filename>", methods=["get"])
+def display_image(filename):
+
+    return send_from_directory('uploads', filename)
 
 
 if __name__ == "__main__":
