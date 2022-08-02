@@ -10,8 +10,13 @@ from flask_jwt_extended import JWTManager
 
 from flask_cors import CORS
 
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
 app = Flask(__name__)
 CORS(app)
+
+limiter = Limiter(app, key_func=get_remote_address)
 
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = "memecatto"  # Change this!
@@ -60,6 +65,7 @@ def verify_token():
 
 @app.route("/api/upload-image", methods=["POST"])
 @jwt_required()
+@limiter.limit("5/minute")
 def upload_image():
     img = request.files["image"]
     img.save(os.path.join("./backend/uploads/", img.filename))
