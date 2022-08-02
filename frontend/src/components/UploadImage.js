@@ -43,7 +43,7 @@ const UploadImage = () => {
 			<ImgCrop rotate>
 				<Upload
 					// action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-					action="http://localhost:3000/"
+					action="/upload-image"
 					customRequest={uploadImage}
 					listType="picture-card"
 					fileList={fileList}

@@ -1,7 +1,7 @@
-import email
 from flask import Flask
 from flask import jsonify
 from flask import request
+import os
 
 from flask_jwt_extended import create_access_token, decode_token
 from flask_jwt_extended import get_jwt_identity
@@ -40,7 +40,7 @@ def test():
 
 @app.route("/api/test-token", methods=['GET'])
 def gen_token():
-    access_token = create_access_token(identity="test-token")
+    access_token = create_access_token(identity="test@token")
     return jsonify(access_token="Bearer "+access_token)
 
 
@@ -61,7 +61,14 @@ def verify_token():
 @app.route("/api/upload-image", methods=["POST"])
 @jwt_required()
 def upload_image():
-    return jsonify("oof")
+    print(request.files)
+
+    img = request.files["image"]
+    print(os.path.join(img.filename))
+    img.save(os.path.join("./backend/uploads/", img.filename))
+
+    return jsonify(os.path.join("./backend/uploads/", img.filename))
+    # return jsonify("oof")
 
 
 if __name__ == "__main__":
