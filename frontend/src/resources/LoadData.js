@@ -100,16 +100,25 @@ export const GoogleAuth = async (email, setLoading, navigate) => {
 			}
 			await localStorage.setItem("token", data.access_token);
 
-			navigate("/oof");
+			navigate("/upload-image");
 		});
 	setLoading(false);
 };
 
-export const VerifyToken = async (setLoading, setAuth, navigate) => {
+export const VerifyToken = async (
+	setLoading,
+	setAuth,
+	navigate,
+	setUserInfo
+) => {
 	setLoading(true);
-
+	const access_token = localStorage.getItem("token");
+	console.log(access_token);
 	await fetch(`/api/verify-token`, {
-		method: "POST",
+		method: "get",
+		headers: {
+			Authorization: access_token,
+		},
 	})
 		.then((res) => {
 			const status = res.status;
@@ -128,10 +137,12 @@ export const VerifyToken = async (setLoading, setAuth, navigate) => {
 				});
 				localStorage.removeItem("token");
 				setAuth(false);
+				setUserInfo("");
 				navigate("/");
 				return;
 			}
-			setAuth(data.Auth);
+			setAuth(data.auth);
+			setUserInfo(data.userName);
 		});
 	setLoading(false);
 };

@@ -50,7 +50,7 @@ def google_auth():
     return jsonify(access_token="Bearer "+access_token)
 
 
-@app.route("/api/verify-token", methods=['POST'])
+@app.route("/api/verify-token", methods=['GET', "POST"])
 @jwt_required()
 def verify_token():
     return jsonify(auth=True,

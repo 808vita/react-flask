@@ -1,18 +1,36 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { GlobalContext } from "../context/GlobalState";
 import { useNavigate } from "react-router-dom";
 import { Breadcrumb, Layout, Menu } from "antd";
-
+import {
+	errorMessage,
+	successMessage,
+	warningMessage,
+} from "../layout/Messages";
+import { VerifyToken } from "../resources/LoadData";
 const { Header, Content, Footer } = Layout;
 
 const MainLayout = () => {
 	const GContext = useContext(GlobalContext);
-	const { loading, setLoading, logout } = GContext;
+	const { loading, setLoading, logout, setAuth, setUserInfo, Auth, userInfo } =
+		GContext;
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		VerifyToken(setLoading, setAuth, navigate, setUserInfo);
+	}, []);
+
+	useEffect(() => {
+		if (userInfo) {
+			successMessage(`${userInfo} Logged in`);
+		}
+	}, [Auth]);
 
 	const handleCLick = (key) => {
 		if (key === "logOut") {
+			successMessage(`${userInfo} Logged Out`);
 			logout(navigate);
+
 			return;
 		} else if (key === "viewImage") {
 			navigate("/view-image");
