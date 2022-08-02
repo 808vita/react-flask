@@ -78,5 +78,11 @@ def display_image(filename):
     return send_from_directory('uploads', filename)
 
 
+@app.route("/api/list-files", methods=["get"])
+def list_files():
+    files = os.listdir("./backend/uploads/")
+    return jsonify(files)
+
+
 if __name__ == "__main__":
     app.run(debug=True)

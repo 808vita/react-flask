@@ -1,33 +1,28 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image } from "antd";
-
+import { ListFiles } from "../resources/LoadData";
 const ViewImages = () => {
-	const [fileList, setFileList] = useState([
-		{
-			uid: "-1",
-			name: "image.png",
-			status: "done",
-			url: "https://avatars.githubusercontent.com/u/97225946?v=4",
-		},
-		{
-			uid: "1",
-			name: "gigafloppa.png",
-			status: "done",
-			url: "https://i.redd.it/p7e9jyxsxjv61.jpg",
-		},
-	]);
+	const [data, setData] = useState([]);
+	useEffect(() => {
+		ListFiles(setData);
+	}, []);
+	useEffect(() => {
+		console.log(data);
+	}, [data]);
 
 	return (
 		<Image.PreviewGroup>
-			{fileList.map((file) => {
-				console.log(file);
-				return <Image key={file.url} width={200} height={200} src={file.url} />;
-			})}
-			<Image
-				width={200}
-				height={200}
-				src={"http://localhost:3000/api/display-image/airfyercat.jpg"}
-			/>
+			{data &&
+				data.map((filename) => {
+					return (
+						<Image
+							key={filename}
+							width={200}
+							height={200}
+							src={`/api/display-image/${filename}`}
+						/>
+					);
+				})}
 		</Image.PreviewGroup>
 	);
 };

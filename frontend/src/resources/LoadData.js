@@ -172,3 +172,34 @@ export const UploadImageController = async (options, setLatestUploadedUrl) => {
 		alert(err);
 	}
 };
+
+export const ListFiles = async (setData) => {
+	try {
+		await fetch(`/api/list-files`, {
+			method: "get",
+		})
+			.then((res) => {
+				const status = res.status;
+				switch (status) {
+					case 200:
+						return res.json();
+					default:
+						return { code: res.status };
+				}
+			})
+			.then(async (data) => {
+				if (data?.code) {
+					errorMessage({
+						show: true,
+						message: data?.code,
+					});
+
+					return;
+				}
+
+				setData(data);
+			});
+	} catch (err) {
+		alert(err);
+	}
+};
