@@ -2,7 +2,7 @@ import { Upload, Image } from "antd";
 import ImgCrop from "antd-img-crop";
 
 import React, { useState } from "react";
-
+import { UploadImageController } from "../resources/LoadData";
 const UploadImage = () => {
 	const [fileList, setFileList] = useState([
 		{
@@ -34,6 +34,9 @@ const UploadImage = () => {
 		const imgWindow = window.open(src);
 		imgWindow?.document.write(image.outerHTML);
 	};
+	const uploadImage = async (options) => {
+		UploadImageController(options);
+	};
 
 	return (
 		<>
@@ -41,6 +44,7 @@ const UploadImage = () => {
 				<Upload
 					// action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
 					action="http://localhost:3000/"
+					customRequest={uploadImage}
 					listType="picture-card"
 					fileList={fileList}
 					onChange={onChange}

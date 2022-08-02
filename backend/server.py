@@ -15,6 +15,7 @@ CORS(app)
 
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = "memecatto"  # Change this!
+app.config['UPLOADED_PHOTOS_DEST'] = "uploads"
 jwt = JWTManager(app)
 
 
@@ -55,6 +56,12 @@ def google_auth():
 def verify_token():
     return jsonify(auth=True,
                    userName=get_jwt_identity(),)
+
+
+@app.route("/api/upload-image", methods=["POST"])
+@jwt_required()
+def upload_image():
+    return jsonify("oof")
 
 
 if __name__ == "__main__":

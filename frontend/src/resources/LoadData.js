@@ -146,3 +146,41 @@ export const VerifyToken = async (
 		});
 	setLoading(false);
 };
+
+export const UploadImageController = async (options) => {
+	const { onSuccess, onError, file, onProgress } = options;
+	const access_token = localStorage.getItem("token");
+	console.log(access_token);
+	const formData = new FormData();
+	formData.append("image", file);
+
+	await fetch(`/api/upload-image`, {
+		method: "post",
+		headers: {
+			Authorization: access_token,
+			"content-type": "multipart/form-data",
+		},
+		body: formData,
+	})
+		.then((res) => {
+			const status = res.status;
+			switch (status) {
+				case 200:
+					return res.json();
+				default:
+					return { code: res.status };
+			}
+		})
+		.then(async (data) => {
+			if (data?.msg) {
+				errorMessage({
+					show: true,
+					message: data?.msg,
+				});
+
+				return;
+			}
+
+			console.log(data);
+		});
+};
