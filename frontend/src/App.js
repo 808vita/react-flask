@@ -9,13 +9,7 @@ import { VerifyToken } from "./resources/LoadData";
 function App() {
 	const [data, setData] = useState([{}]);
 	const GContext = useContext(GlobalContext);
-	const { loading, setLoading, Auth } = GContext;
-	useEffect(() => {
-		const localToken = localStorage.getItem("token");
-		if (Auth && localToken) {
-			return;
-		}
-	}, []);
+	const { loading, setLoading } = GContext;
 
 	// useEffect(() => {
 	// 	fetch("/api/test-token")
@@ -56,9 +50,8 @@ function App() {
 	// }, [data]);
 
 	return (
-		<>
-			<Routes>
-				{/* <MainLayout />
+		<Routes>
+			{/* <MainLayout />
 			<div className="App">
 				{!data.oof ? (
 					<p>Loading...</p>
@@ -71,15 +64,14 @@ function App() {
 
 				
 			</div> */}
-				<Route exact path="/" element={<Login />} />
+			<Route exact path="/" element={<Login />} />
 
-				{/* <Route exact path="/upload-image" element={<UploadImage />} /> */}
-				{/* <Route exact path="/view-image" element={<ViewImage />} /> */}
-				<Route exact path="/upload-image" element={<MainLayout />} />
-				<Route exact path="/view-image" element={<MainLayout />} />
-				<Route exact path="/mainlayout" element={<MainLayout />} />
-			</Routes>
-		</>
+			{/* <Route exact path="/upload-image" element={<UploadImage />} /> */}
+			{/* <Route exact path="/view-image" element={<ViewImage />} /> */}
+			<Route exact path="/upload-image" element={<MainLayout />} />
+			<Route exact path="/view-image" element={<MainLayout />} />
+			<Route exact path="/mainlayout" element={<MainLayout />} />
+		</Routes>
 	);
 }
 

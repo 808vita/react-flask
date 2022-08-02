@@ -1,13 +1,26 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Auth2 from "../components/Auth2";
 import { Button } from "antd";
 import { TestToken } from "../resources/LoadData";
 import { GlobalContext } from "../context/GlobalState";
 import { useNavigate } from "react-router-dom";
+import { VerifyToken } from "../resources/LoadData";
 const Login = () => {
 	const GContext = useContext(GlobalContext);
-	const { loading, setLoading } = GContext;
+	const { loading, setLoading, setAuth, setUserInfo, Auth } = GContext;
 	const navigate = useNavigate();
+	useEffect(() => {
+		const localToken = localStorage.getItem("token");
+		if (localToken) {
+			VerifyToken(setLoading, setAuth, navigate, setUserInfo);
+		}
+	}, []);
+	useEffect(() => {
+		if (Auth) {
+			navigate("/upload-image");
+		}
+	}, [Auth]);
+
 	return (
 		<div className="login-form">
 			<div className="auth-button">
