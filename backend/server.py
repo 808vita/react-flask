@@ -25,7 +25,14 @@ jwt = JWTManager(app)
 def members():
     return {"oof": "oof1", "oof2": "oof2"}
 
-
+@app.route("/api/test", methods=['GET'])
+def test():
+    try:
+        testData = request.json.get("test",None)
+        return testData
+    except:
+        return 
+    
 @app.route("/api/test-token", methods=['GET'])
 def gen_token():
     access_token = create_access_token(identity="test-token")
