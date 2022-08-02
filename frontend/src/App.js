@@ -1,43 +1,64 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 
 import Login from "./pages/Login";
 import MainLayout from "./layout/MainLayout";
-
+import { Routes, Route } from "react-router-dom";
+import { GlobalContext } from "./context/GlobalState";
+import { VerifyToken } from "./resources/LoadData";
 function App() {
 	const [data, setData] = useState([{}]);
+	const GContext = useContext(GlobalContext);
+	const { loading, setLoading, Auth } = GContext;
 	useEffect(() => {
-		fetch("/api/members", {
-			method: "get",
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				setData(data);
-				console.log(data);
-			});
-
-		fetch("/api/test-token")
-			.then((res) => res.json())
-			.then((data) => {
-				setData(data);
-				console.log(data);
-			});
-		const formData = new FormData();
-		formData.append("test", "oof");
-		fetch("/api/test", {
-			method: "get",
-			body: formData,
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				setData(data);
-				console.log(data);
-			});
+		const localToken = localStorage.getItem("token");
+		if (Auth && localToken) {
+			return;
+		}
 	}, []);
+
+	// useEffect(() => {
+	// 	fetch("/api/test-token")
+	// 		.then((res) => res.json())
+	// 		.then((data) => {
+	// 			setData(data);
+	// 			console.log(data);
+	// 		});
+
+	// 	const formData = new FormData();
+	// 	formData.append("test", "oof");
+	// 	fetch("/api/test", {
+	// 		method: "post",
+	// 		body: formData,
+	// 	})
+	// 		.then((res) => {
+	// 			res.json();
+	// 		})
+	// 		.then((data) => {
+	// 			console.log(data);
+	// 		});
+	// }, []);
+
+	// useEffect(() => {
+	// 	if (!data?.access_token) {
+	// 		return;
+	// 	}
+	// 	fetch("/api/members", {
+	// 		method: "get",
+	// 		headers: {
+	// 			Authorization: data?.access_token,
+	// 		},
+	// 	})
+	// 		.then((res) => res.json())
+	// 		.then((data) => {
+	// 			console.log(data);
+	// 		});
+	// }, [data]);
 
 	return (
 		<>
-			{/* <MainLayout />
+			<Routes>
+				{/* <MainLayout />
 			<div className="App">
 				{!data.oof ? (
 					<p>Loading...</p>
@@ -50,7 +71,14 @@ function App() {
 
 				
 			</div> */}
-			<Login />
+				<Route exact path="/" element={<Login />} />
+
+				{/* <Route exact path="/upload-image" element={<UploadImage />} /> */}
+				{/* <Route exact path="/view-image" element={<ViewImage />} /> */}
+				<Route exact path="/upload-image" element={<MainLayout />} />
+				<Route exact path="/view-image" element={<MainLayout />} />
+				<Route exact path="/mainlayout" element={<MainLayout />} />
+			</Routes>
 		</>
 	);
 }

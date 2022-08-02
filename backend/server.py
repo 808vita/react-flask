@@ -1,8 +1,9 @@
+import email
 from flask import Flask
 from flask import jsonify
 from flask import request
 
-from flask_jwt_extended import create_access_token
+from flask_jwt_extended import create_access_token, decode_token
 from flask_jwt_extended import get_jwt_identity
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import JWTManager
@@ -23,20 +24,37 @@ jwt = JWTManager(app)
 @app.route("/api/members", methods=['GET'])
 @jwt_required()
 def members():
-    return {"oof": "oof1", "oof2": "oof2"}
+    # decodedToken=decode_token(request.headers.get('Authorization').split()[1])
+    return jsonify(auth=True,
+                   userName=get_jwt_identity(),)
 
-@app.route("/api/test", methods=['GET'])
+
+@app.route("/api/test", methods=['POST'])
 def test():
-    try:
-        testData = request.json.get("test",None)
-        return testData
-    except:
-        return 
-    
+    if request.form.get('test'):
+        return jsonify(request.form.get('test'))
+
+    return "oof"
+
+
 @app.route("/api/test-token", methods=['GET'])
 def gen_token():
     access_token = create_access_token(identity="test-token")
-    return jsonify(access_token=access_token)
+    return jsonify(access_token="Bearer "+access_token)
+
+
+@app.route("/api/google-auth", methods=['POST'])
+def google_auth():
+    email = request.form.get('email')
+    access_token = create_access_token(identity=email)
+    return jsonify(access_token="Bearer "+access_token)
+
+
+@app.route("/api/verify-token", methods=['POST'])
+@jwt_required()
+def verify_token():
+    return jsonify(auth=True,
+                   userName=get_jwt_identity(),)
 
 
 if __name__ == "__main__":
