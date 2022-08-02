@@ -1,7 +1,7 @@
 import { Upload, Image } from "antd";
 import ImgCrop from "antd-img-crop";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { UploadImageController } from "../resources/LoadData";
 const UploadImage = () => {
 	const [fileList, setFileList] = useState([
@@ -12,8 +12,14 @@ const UploadImage = () => {
 			url: "https://avatars.githubusercontent.com/u/97225946?v=4",
 		},
 	]);
+	const [latestUploadedUrl, setLatestUploadedUrl] = useState("");
+
+	useEffect(() => {
+		console.log(latestUploadedUrl);
+	}, [latestUploadedUrl]);
 
 	const onChange = ({ fileList: newFileList }) => {
+		console.log(newFileList);
 		setFileList(newFileList);
 	};
 
@@ -35,7 +41,7 @@ const UploadImage = () => {
 		imgWindow?.document.write(image.outerHTML);
 	};
 	const uploadImage = async (options) => {
-		UploadImageController(options);
+		UploadImageController(options, setLatestUploadedUrl);
 	};
 
 	return (
@@ -53,10 +59,17 @@ const UploadImage = () => {
 					{fileList.length < 5 && "+ Upload"}
 				</Upload>
 			</ImgCrop>
-			<Image.PreviewGroup>
-				{fileList.map((file) => {
-					return <Image key={file.url} width={200} src={file.url} />;
-				})}
+			<Image.PreviewGroup listType="picture-card">
+				{latestUploadedUrl && (
+					<>
+						<Image
+							key={latestUploadedUrl}
+							width={200}
+							src={latestUploadedUrl}
+						/>
+						<h3>{latestUploadedUrl.split("/")[3]}</h3>
+					</>
+				)}
 			</Image.PreviewGroup>
 		</>
 	);

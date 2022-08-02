@@ -126,7 +126,7 @@ export const VerifyToken = async (
 	}
 };
 
-export const UploadImageController = async (options) => {
+export const UploadImageController = async (options, setLatestUploadedUrl) => {
 	try {
 		const { onSuccess, onError, file, onProgress } = options;
 		const access_token = localStorage.getItem("token");
@@ -152,7 +152,7 @@ export const UploadImageController = async (options) => {
 						return res.json();
 
 					default:
-						return { code: res.status };
+						return { code: status };
 				}
 			})
 			.then(async (data) => {
@@ -166,6 +166,7 @@ export const UploadImageController = async (options) => {
 				}
 
 				console.log(data);
+				setLatestUploadedUrl(data);
 			});
 	} catch (err) {
 		alert(err);
