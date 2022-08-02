@@ -5,7 +5,9 @@ import Login from "./pages/Login";
 import MainLayout from "./layout/MainLayout";
 import { Routes, Route } from "react-router-dom";
 import { GlobalContext } from "./context/GlobalState";
-import { VerifyToken } from "./resources/LoadData";
+import UploadImage from "./components/UploadImage";
+import ViewImages from "./components/ViewImages";
+
 function App() {
 	const [data, setData] = useState([{}]);
 	const GContext = useContext(GlobalContext);
@@ -68,8 +70,16 @@ function App() {
 
 			{/* <Route exact path="/upload-image" element={<UploadImage />} /> */}
 			{/* <Route exact path="/view-image" element={<ViewImage />} /> */}
-			<Route exact path="/upload-image" element={<MainLayout />} />
-			<Route exact path="/view-image" element={<MainLayout />} />
+			<Route
+				exact
+				path="/upload-image"
+				element={<MainLayout childern={<UploadImage />} />}
+			/>
+			<Route
+				exact
+				path="/view-image"
+				element={<MainLayout childern={<ViewImages />} />}
+			/>
 			<Route exact path="/mainlayout" element={<MainLayout />} />
 		</Routes>
 	);

@@ -10,7 +10,7 @@ import {
 import { VerifyToken } from "../resources/LoadData";
 const { Header, Content, Footer } = Layout;
 
-const MainLayout = () => {
+const MainLayout = ({ childern }) => {
 	const GContext = useContext(GlobalContext);
 	const { loading, setLoading, logout, setAuth, setUserInfo, Auth, userInfo } =
 		GContext;
@@ -41,6 +41,7 @@ const MainLayout = () => {
 			return;
 		}
 	};
+	// console.log(childern);
 	return (
 		<Layout>
 			<Header
@@ -86,7 +87,7 @@ const MainLayout = () => {
 						minHeight: 380,
 					}}
 				>
-					Content
+					{childern}
 				</div>
 			</Content>
 			<Footer
