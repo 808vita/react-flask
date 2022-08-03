@@ -101,9 +101,19 @@ def test_url():
 
 @app.route("/api/throttle-test/<count>", methods=["get"])
 def throttle_test(count):
-    for i in range(count):
-        print("oof")
-    return
+    new_count = 0
+    try:
+        new_count = int(count)
+    except:
+        return ("enter number at the end")
+    new_array = []
+    for i in range(new_count):
+        response = requests.get(f"http://{request.host}/api/test-url")
+        # print(f"{response} {i}")
+        new_array.append(f"{response} {i}")
+    new_array.append(
+        "response 200: successful api call | response 429: too many requests throttling requests with limiter of 5 per minute")
+    return jsonify(new_array)
 
 
 if __name__ == "__main__":
