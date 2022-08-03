@@ -21,7 +21,7 @@ limiter = Limiter(app, key_func=get_remote_address)
 
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = "memecatto"  # Change this!
-app.config['UPLOAD_FOLDER'] = "uploads"
+app.config['UPLOAD_FOLDER'] = "/uploads"
 jwt = JWTManager(app)
 
 
@@ -73,7 +73,9 @@ def verify_token():
 @limiter.limit("5/minute")
 def upload_image():
     img = request.files["image"]
-    img.save(os.path.join("./backend/uploads/", img.filename))
+    # img.save(os.path.join("./backend/uploads/", img.filename))
+    print(os.path.join("./uploads/", img.filename))
+    img.save(os.path.join("./uploads/", img.filename))
     return jsonify(f"/api/display-image/{img.filename}")
 
 
@@ -85,7 +87,7 @@ def display_image(filename):
 
 @app.route("/api/list-files", methods=["get"])
 def list_files():
-    files = os.listdir("./backend/uploads/")
+    files = os.listdir("./uploads/")
     return jsonify(files)
 
 

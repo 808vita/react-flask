@@ -7,7 +7,7 @@
 
 # testing
 /venv
-
+__pycache__
 # production
 
 # misc
