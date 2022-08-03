@@ -2,6 +2,7 @@ from flask import Flask, send_file, send_from_directory, render_template
 from flask import jsonify
 from flask import request
 import os
+import requests
 
 from flask_jwt_extended import create_access_token, decode_token
 from flask_jwt_extended import get_jwt_identity
@@ -89,6 +90,20 @@ def display_image(filename):
 def list_files():
     files = os.listdir("./uploads/")
     return jsonify(files)
+
+
+@app.route("/api/test-url", methods=["get"])
+@limiter.limit("5/minute")
+def test_url():
+
+    return ("oof")
+
+
+@app.route("/api/throttle-test/<count>", methods=["get"])
+def throttle_test(count):
+    for i in range(count):
+        print("oof")
+    return
 
 
 if __name__ == "__main__":
